@@ -1,3 +1,7 @@
 @import "variables/variables.scss";
 @import "components/global";
-@import "core/global"
+@import "core/global";
+
+.button{
+    @include button;
+}

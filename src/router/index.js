@@ -21,7 +21,21 @@ const routes = [
   {
     path: '/machine',
     name: 'MachineAdmin',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MachineAdmin.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/MachineAdmin.vue'),
+    children:[
+      {
+        path: '',
+        component: () => import('../components/machineInfo.vue')
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('../components/editMachine.vue')
+      },
+      {
+        path: 'add',
+        component: () => import('../components/addMachine.vue')
+      }
+    ]
   }
 ]
 

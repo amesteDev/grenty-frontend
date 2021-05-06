@@ -1,0 +1,100 @@
+<template>
+  <div>
+    <h2>EDIT MACHINE</h2>
+    <form @submit="checkForm">
+      <input
+        v-model="name"
+        type="text"
+        class="form-control"
+        required
+        autofocus
+      />
+      <input v-model="price" type="number" required />
+      <textarea v-model="description"></textarea>
+      <button class="button" type="submit">Spara</button>
+    </form>
+  </div>
+</template>
+
+
+<script>
+import axios from "axios";
+
+export default {
+  name: "LoginBox",
+  props: {
+    msg: String,
+  },
+  data() {
+    return {
+      info: null,
+      name: null,
+      price: null,
+      description: null,
+    };
+  },
+  methods: {
+    async fetchMyMachines() {
+      axios
+        .get("http://localhost:3000/machine/info/" + this.$route.params.id, {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgxMmYwODNhZWE2NDJiOWM3YzQxYTUiLCJuYW1lIjoicsO2diIsImV4cCI6MTYyNDkwMTY0Ny44NTUsImlhdCI6MTYxOTcxNzY0N30.msQa3ktAw7vZ7cIi-W0_4_gKMIJuSXVtcT6tjvTQ6X8",
+          },
+          email: "info@ameste.se",
+          password: "password",
+          user: "60812f083aea642b9c7c41a5",
+        })
+        .then((response) => {
+          this.name = response.data.machineName;
+          this.price = response.data.price;
+          this.description = response.data.description;
+          this.info = response.data;
+        });
+    },
+    checkForm: function (e) {
+      if (this.name && this.age) {
+        return true;
+      }
+
+      this.errors = [];
+
+      if (!this.name) {
+        this.errors.push("Fyll i ett namn.");
+      }
+      if (!this.price) {
+        this.errors.push("Ange ett pris på maskinen.");
+      }
+
+      e.preventDefault();
+
+      if (!this.errors.length) {
+        this.updateMachine();
+      }
+    },
+    async updateMachine() {
+      axios.put(
+        "http://localhost:3000/machine/update",
+        {
+          machineName: this.name,
+          price: this.price,
+          description: this.description,
+          _id: this.$route.params.id
+        },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgxMmYwODNhZWE2NDJiOWM3YzQxYTUiLCJuYW1lIjoicsO2diIsImV4cCI6MTYyNDkwMTY0Ny44NTUsImlhdCI6MTYxOTcxNzY0N30.msQa3ktAw7vZ7cIi-W0_4_gKMIJuSXVtcT6tjvTQ6X8",
+          },
+        }
+      );
+    },
+  },
+  mounted() {
+    this.fetchMyMachines();
+  },
+};
+</script>
+
+<style scoped lang="scss">
+</style>

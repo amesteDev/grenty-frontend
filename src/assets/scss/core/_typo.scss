@@ -3,7 +3,16 @@ p{
     line-height: 1.4em;
 }
 
-h1, h2, h3, h4, h5, h6, label{
+h1, h2, h3, h4, h5, h6, label, a{
     font-family: $h-font;
 }
 
+a{
+    color: $darklight;
+
+
+    :hover{
+        text-decoration-color: $blue;
+        color: $highlight;
+    }
+}

@@ -11,6 +11,11 @@
       </div>
     </header>
     <router-view />
+    <footer>
+      <p>grenty.se - &copy; 2021 - Morgan Andersson</p><br />
+      <router-link to="/about">Om tjänsten</router-link>
+      <router-link to="/contact">Kontakt</router-link>
+      </footer>
   </div>
 </template>
 

@@ -25,6 +25,7 @@
     <p>Inget konto?</p>
     <router-link to="register">Registrera här!</router-link>
     <br />
+    <p>{{ info }}</p>
   </div>
 </template>
 

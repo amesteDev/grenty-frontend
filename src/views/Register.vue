@@ -17,7 +17,12 @@
     </p>
     <p>
         <label for="password">Lösenord</label>
-        <input id="password" v-model="password" type="password" name="password">
+        <input id="password" v-model="password" type="password" name="password"><br/>
+        Lösenordet behöver innehålla:<br />
+        <span :class="pw_length ? 'required' : '' ">minst åtta tecken</span><br />
+        <span :class="pw_uppercase ? 'required' : '' ">minst en stor bokstav</span><br />
+        <span :class="pw_lowercase ? 'required' : '' ">minst en liten bosktav</span><br />
+        <span :class="pw_number ? 'required' : '' ">minst en siffra</span><br />
     </p>
     
     <p>
@@ -39,10 +44,9 @@
     </p>
 
 
-      <button type="submit" value="Submit" class="button">Login</button>
+      <button type="submit" value="Submit" class="button">Registrera!</button>
     </form>
-    <p>Inget konto?</p>
-    <router-link to="register">Registrera här!</router-link>
+
   </div>
 </template>
 
@@ -59,7 +63,19 @@ export default {
       city: null,
       email: null,
       errors: [],
+      pw_number: false,
+      pw_length: false,
+      pw_lowercase: false,
+      pw_uppercase: false,
     };
+  },
+  watch: {
+    password() {
+      this.pw_length = this.password.length > 8;
+      this.pw_number = /\d/.test(this.password);
+      this.pw_lowercase = /[a-z]/.test(this.password);
+      this.pw_uppercase = /[A-Z]/.test(this.password);
+    },
   },
 
   methods: {
@@ -72,6 +88,21 @@ export default {
 
       if (!this.name) {
         this.errors.push("Fyll i en e-post.");
+      }
+      if (!this.password) {
+        this.errors.push("Fyll i ett lösenord.");
+      }
+      if (!this.name) {
+        this.errors.push("Fyll i ditt namn");
+      }
+      if (!this.adress) {
+        this.errors.push("Fyll i din adress.");
+      }
+      if (!this.zip) {
+        this.errors.push("Fyll i ditt postnummer.");
+      }
+      if (!this.city) {
+        this.errors.push("Fyll i din ort.");
       }
       /*
       lägg in check för lösenordet här med regex
@@ -90,18 +121,15 @@ export default {
 
     registerUser() {
       axios
-        .post(
-          "http://localhost:3000/user/reg",
-          {
-            email: this.email,
-            name: this.name,
-            password: this.password,
-            adress: this.adress,
-            zip: this.zip,
-            city: this.city,
-            username: 'okok'
-          }
-        )
+        .post("http://localhost:3000/user/reg", {
+          email: this.email,
+          name: this.name,
+          password: this.password,
+          adress: this.adress,
+          zip: this.zip,
+          city: this.city,
+          username: "okok",
+        })
         .then((response) => (this.info = response.data));
     },
   },
@@ -109,4 +137,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.required {
+  text-decoration: line-through;
+}
 </style>

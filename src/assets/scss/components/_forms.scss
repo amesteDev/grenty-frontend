@@ -1,0 +1,13 @@
+form{
+    grid-template-rows: auto;
+    input{
+        padding: 4px;
+        border-radius: 4px;
+        border-color: $darklight;
+    }
+    button{
+        width: 50%;
+        margin: auto;
+    }
+    display: grid;
+}

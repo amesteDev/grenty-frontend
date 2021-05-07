@@ -3,7 +3,6 @@
     <form
       id="app"
       @submit="checkForm"
-      action="https://vuejs.org/"
       method="post"
     >
      <p v-if="errors.length">
@@ -13,11 +12,11 @@
       </ul>
     </p>
     <p>
-        <label for="email">E-post:</label>
+        <label for="email">E-post</label><br />
         <input id="email" v-model="email" type="email" name="email">
     </p>
     <p>
-        <label for="password">Lösenord</label>
+        <label for="password">Lösenord</label><br />
         <input id="password" v-model="password" type="password" name="password">
     </p>
       <button  type="submit" value="Submit" class="button">Login</button>

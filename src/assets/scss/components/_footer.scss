@@ -1,6 +1,13 @@
 footer{
-    background-color: $green;
-    color: $highlight;
+    background-color: $highlight;
+    color: $green;
     border-radius: 1em 1em 0 0;
     text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    a{
+        color: $black;
+        margin-left: 10px;
+    }
 }

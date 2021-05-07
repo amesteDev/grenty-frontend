@@ -1,4 +1,4 @@
-p{
+p, input{
     font-family: $text-font;
     line-height: 1.4em;
 }
@@ -7,10 +7,15 @@ h1, h2, h3, h4, h5, h6, label, a{
     font-family: $h-font;
 }
 
+input{
+    font-size: 16px;
+}
+
+label{
+    font-weight: bold;
+}
+
 a{
-    color: $darklight;
-
-
     :hover{
         text-decoration-color: $blue;
         color: $highlight;

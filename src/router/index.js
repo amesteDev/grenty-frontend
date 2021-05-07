@@ -5,6 +5,21 @@ import Verify from '../views/Verify.vue'
 
 Vue.use(VueRouter)
 
+function guardMyroute(to, from, next) {
+	var isAuthenticated = false;
+	if (localStorage.getItem('token')) {
+		isAuthenticated = true;
+	}
+	else {
+		isAuthenticated = false;
+	}
+	if (isAuthenticated) {
+		next(); // allow to enter route
+	} else {
+		next('/'); // go to '/login';
+	}
+}
+
 const routes = [
   {
     path: '/',
@@ -37,6 +52,7 @@ const routes = [
   {
     path: '/machine',
     name: 'MachineAdmin',
+    beforeEnter: guardMyroute,
     component: () => import(/* webpackChunkName: "about" */ '../views/MachineAdmin.vue'),
     children:[
       {

@@ -26,11 +26,8 @@ export default {
       axios
         .get("http://localhost:3000/machine/info/", {
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgxMmYwODNhZWE2NDJiOWM3YzQxYTUiLCJuYW1lIjoicsO2diIsImV4cCI6MTYyNDkwMTY0Ny44NTUsImlhdCI6MTYxOTcxNzY0N30.msQa3ktAw7vZ7cIi-W0_4_gKMIJuSXVtcT6tjvTQ6X8'
-          },
-          email: "info@ameste.se",
-          password: "password",
-          user: "60812f083aea642b9c7c41a5",
+            Authorization: 'Bearer ' + localStorage.token
+          }
         })
         .then((response) => (this.info = response.data));
     },

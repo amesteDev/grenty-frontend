@@ -39,7 +39,7 @@ export default {
         .get("http://localhost:3000/machine/info/" + this.$route.params.id, {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgxMmYwODNhZWE2NDJiOWM3YzQxYTUiLCJuYW1lIjoicsO2diIsImV4cCI6MTYyNDkwMTY0Ny44NTUsImlhdCI6MTYxOTcxNzY0N30.msQa3ktAw7vZ7cIi-W0_4_gKMIJuSXVtcT6tjvTQ6X8",
+              "Bearer " + localStorage.token,
           },
           email: "info@ameste.se",
           password: "password",
@@ -50,6 +50,9 @@ export default {
           this.price = response.data.price;
           this.description = response.data.description;
           this.info = response.data;
+          if(response.status == 200){
+            console.log("Lagring ok");
+          }
         });
     },
     checkForm: function (e) {

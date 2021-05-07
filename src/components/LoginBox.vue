@@ -25,7 +25,6 @@
     <p>Inget konto?</p>
     <router-link to="register">Registrera här!</router-link>
     <br />
-    <p>{{ info }}</p>
   </div>
 </template>
 
@@ -53,15 +52,13 @@ export default {
       }
 
       this.errors = [];
-     
+
       if (!this.email) {
         this.errors.push("Fyll i en e-post.");
       }
-    
+
       if (!this.password) {
-        this.errors.push(
-          "Ange ditt lösenord."
-        );
+        this.errors.push("Ange ditt lösenord.");
       }
 
       e.preventDefault();
@@ -77,8 +74,13 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          (this.info = response.data),
+            (this.info = response.data),
             (localStorage.token = response.data.token);
+          if (!response.data.err) {
+            this.$router.go(0);
+          } else {
+            this.errors.push(response.data.msg);
+          }
         });
     },
   },

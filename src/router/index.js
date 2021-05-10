@@ -50,6 +50,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/gdpr',
+    name: 'GDPR',
+    component: () => import('../views/GDPR.vue')
+
+  },
+  {
     path: '/machine',
     name: 'MachineAdmin',
     beforeEnter: guardMyroute,

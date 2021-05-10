@@ -39,6 +39,15 @@
         <input id="zip" v-model="zip" type="zip" name="zip">
     </p>
             <p>
+        <label for="lan">Stad:</label>
+        <input id="lan" v-model="lan" type="text" name="lan">
+    </p>
+                <p>
+        <label for="kommun">Stad:</label>
+        <input id="kommun" v-model="kommun" type="text" name="kommun">
+    </p>
+
+            <p>
         <label for="city">Stad:</label>
         <input id="city" v-model="city" type="text" name="city">
     </p>
@@ -53,15 +62,22 @@
 
 <script>
 import axios from "axios";
+import lanJson from "../json/lan.json";
+import kommunJson from "../json/kommun.json";
+
 export default {
   data() {
     return {
+      lanLista: lanJson,
+      kommunLista: kommunJson,
       name: null,
       password: null,
       adress: null,
       zip: null,
       city: null,
       email: null,
+      lan: null,
+      kommun: null,
       errors: [],
       pw_number: false,
       pw_length: false,

@@ -2,10 +2,37 @@
   <div>
     <h2>SÖk maskin</h2>
     <div v-if="search">
-      <h2>Filtrera</h2>
-      <h3>Maskintitel</h3>
-      <p>Maskinbeskrivnvin</p>
-      <p>Pris: 129:-/h</p>
+      <div class="filterbox">
+        <h2>Filtrera sökresultat:</h2>
+      </div>
+      <h3>Filtrera på ort:</h3>
+      <div v-for="stad in citys" :key="stad">
+        {{ stad }}
+        <input type="checkbox" v-model="checkedCitys" v-bind:value="stad" />
+      </div>
+
+      <h3>Filtrera på maskintyp:</h3>
+
+      <div v-for="maskinTyp in machineTypes" :key="maskinTyp">
+        <input
+          type="checkbox"
+          v-model="checkedMachines"
+          v-bind:value="maskinTyp"
+        />{{ maskinTyp }}
+      </div>
+
+      <div v-for="maskin in filteredList" :key="maskin._id" :value="maskin._id">
+        
+          <div v-for="msk in maskin.machines" :key="msk._id" :value="msk._id">
+            <router-link :to="'/info/' + maskin._id + '/' + msk._id">
+            <h3>Titel: {{ msk.machineName }}</h3>
+            <p>Beskrivning: {{ msk.description }}</p>
+            <p>Pris: {{ msk.price }}</p>
+            <p>Finns i: {{ maskin.city }}</p>
+               </router-link>
+          </div>
+     
+      </div>
     </div>
     <div v-else>
       <p>
@@ -62,30 +89,73 @@ export default {
       county: null,
       kommun: null,
       error: null,
+      citys: [],
+      machineTypes: [],
+      checkedMachines: [],
+      checkedCitys: [],
     };
   },
   methods: {
-    checkForm(e){
+    checkForm(e) {
       e.preventDefault();
       this.fetchInKommun();
-      
     },
     fetchInKommun() {
-    
       axios
         .post("http://localhost:3000/search", {
           //om tid finns bygg ut så det går att välja flera kommuner att söka på.
-          kommun: this.kommun,
+          kommun: "Gävle",
         })
         .then((response) => {
-            this.search = response.data;
-            console.log(this.search);
+          this.search = response.data;
+          this.filterGeneration();
         });
+    },
+    filterGeneration() {
+      for (const item of Object.entries(this.search)) {
+        if (!this.citys.includes(item[1].city)) {
+          this.citys.push(item[1].city);
+          this.checkedCitys.push(item[1].city);
+        }
+        for (const machine in item[1].machines) {
+          if (
+            !this.machineTypes.includes(item[1].machines[machine].machineName)
+          ) {
+            this.machineTypes.push(item[1].machines[machine].machineName);
+          }
+        }
+      }
+      this.filteredSearch = this.search;
     },
     selectLan() {
       this.selectedKommuner = this.kommuner.find(
         (kom) => kom.code == this.county
       ).kommuner;
+    },
+  },
+  computed: {
+    filteredList() {
+      if (!this.checkedMachines.length) {
+        return this.search.filter((element) =>
+          this.checkedCitys.includes(element.city)
+        );
+      }
+
+      return this.search
+        .filter((element) =>
+          element.machines.some(
+            (maskin) =>
+              this.checkedMachines.includes(maskin.machineName) &&
+              this.checkedCitys.includes(element.city)
+          )
+        )
+        .map((element) => {
+          let newElt = Object.assign({}, element); // copies element
+          newElt.machines = newElt.machines.filter((maskin) =>
+            this.checkedMachines.includes(maskin.machineName)
+          );
+          return newElt;
+        });
     },
   },
 };

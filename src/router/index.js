@@ -66,6 +66,10 @@ const routes = [
         component: () => import('../components/machineInfo.vue')
       },
       {
+        path: '/info/:user/:machine',
+        component: () => import('../components/rentInfo.vue')
+      },
+      {
         path: 'edit/:id',
         component: () => import('../components/editMachine.vue')
       },

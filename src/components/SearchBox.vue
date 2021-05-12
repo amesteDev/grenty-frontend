@@ -1,31 +1,49 @@
 <template>
   <div>
     <h2>SÖk maskin</h2>
-    <p>Välj först vilken län du vill söka i, sedan vilken kommun i det länet</p>
-    <form>
-      <select name="county" id="county" v-model="county" @change="selectLan()">
-        <option v-for="lans in lan" :key="lans.code" :value="lans.code">
-          {{ lans.name }}
-        </option>
-      </select>
-      <div v-if="selectedKommuner.length > 0">
+    <div v-if="search">
+      <h2>Filtrera</h2>
+      <h3>Maskintitel</h3>
+      <p>Maskinbeskrivnvin</p>
+      <p>Pris: 129:-/h</p>
+    </div>
+    <div v-else>
+      <p>
+        Välj först vilken län du vill söka i, sedan vilken kommun i det länet
+      </p>
+      <div v-if="error">
+        <p>{{ error }}</p>
+      </div>
+      <form id="app" @submit="checkForm" method="post">
         <select
-          name="kommun"
-          id="kommun"
-          v-model="kommun"
-          placeholder="Välj kommun..."
+          name="county"
+          id="county"
+          v-model="county"
+          @change="selectLan()"
         >
-          <option
-            v-for="kommunerAttSkriva in selectedKommuner"
-            :key="kommunerAttSkriva.code"
-            :value="kommunerAttSkriva.code"
-          >
-            {{ kommunerAttSkriva.name }}
+          <option v-for="lans in lan" :key="lans.code" :value="lans.code">
+            {{ lans.name }}
           </option>
         </select>
-      </div>
-      <button class="button" type="sumbit" value="submit">Sök</button>
-    </form>
+        <div v-if="selectedKommuner.length > 0">
+          <select
+            name="kommun"
+            id="kommun"
+            v-model="kommun"
+            placeholder="Välj kommun..."
+          >
+            <option
+              v-for="kommunerAttSkriva in selectedKommuner"
+              :key="kommunerAttSkriva.code"
+              :value="kommunerAttSkriva.name"
+            >
+              {{ kommunerAttSkriva.name }}
+            </option>
+          </select>
+        </div>
+        <button class="button" type="sumbit" value="submit">Sök</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -43,27 +61,31 @@ export default {
       lan: lanJson,
       county: null,
       kommun: null,
+      error: null,
     };
   },
   methods: {
+    checkForm(e){
+      e.preventDefault();
+      this.fetchInKommun();
+      
+    },
     fetchInKommun() {
+    
       axios
         .post("http://localhost:3000/search", {
-          email: this.email,
-          password: this.password,
+          //om tid finns bygg ut så det går att välja flera kommuner att söka på.
+          kommun: this.kommun,
         })
         .then((response) => {
-          (this.info = response.data),
-            (localStorage.token = response.data.token);
-          if (!response.data.err) {
-            this.$router.go(0);
-          } else {
-            this.errors.push(response.data.msg);
-          }
+            this.search = response.data;
+            console.log(this.search);
         });
     },
     selectLan() {
-      this.selectedKommuner = this.kommuner.find(kom => kom.code == this.county).kommuner;
+      this.selectedKommuner = this.kommuner.find(
+        (kom) => kom.code == this.county
+      ).kommuner;
     },
   },
 };

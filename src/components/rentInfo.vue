@@ -1,13 +1,16 @@
 <template>
 <div>
   <div>
-    <h2>Kram</h2>
+    <h2>Skicka förfrågan om att hyra maskin</h2>
   </div>
-  <div>
+  <div v-if="machine">
     <h3>{{ machine.machineName }}</h3>
     <p>{{ machine.description }}</p>
-    <p>{{ machine.price }}</p>
-    <p>{{ owner }} </p>
+    <p>{{ machine.price }}/h</p>
+ 
+    <p>Välj datum du vill hyra:</p>
+    <input type="date"><br />
+    <button class="button">Skicka förfrågan om hyra</button>
   </div>
 </div>
 </template>

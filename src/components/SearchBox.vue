@@ -1,6 +1,8 @@
 <template>
   <div>
     <h2>SÖk maskin</h2>
+    <div v-if="error">
+      <p>{{ error }}</p></div>
     <div v-if="search">
       <div class="filterbox">
         <h2>Filtrera sökresultat:</h2>
@@ -22,16 +24,14 @@
       </div>
 
       <div v-for="maskin in filteredList" :key="maskin._id" :value="maskin._id">
-        
-          <div v-for="msk in maskin.machines" :key="msk._id" :value="msk._id">
-            <router-link :to="'/info/' + maskin._id + '/' + msk._id">
+        <div v-for="msk in maskin.machines" :key="msk._id" :value="msk._id">
+          <router-link :to="'/info/' + maskin._id + '/' + msk._id">
             <h3>Titel: {{ msk.machineName }}</h3>
             <p>Beskrivning: {{ msk.description }}</p>
             <p>Pris: {{ msk.price }}</p>
             <p>Finns i: {{ maskin.city }}</p>
-               </router-link>
-          </div>
-     
+          </router-link>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -93,6 +93,7 @@ export default {
       machineTypes: [],
       checkedMachines: [],
       checkedCitys: [],
+  
     };
   },
   methods: {
@@ -102,13 +103,24 @@ export default {
     },
     fetchInKommun() {
       axios
-        .post("http://localhost:3000/search", {
-          //om tid finns bygg ut så det går att välja flera kommuner att söka på.
-          kommun: "Gävle",
-        })
+        .post("http://localhost:3000/search", 
+          {
+            kommun: this.kommun,
+          },
+          {
+            headers: {
+              Authorization:
+                "Bearer " + localStorage.token,
+            },
+          })
         .then((response) => {
+          console.log(response.data)
+          if(!response.data.err){
           this.search = response.data;
           this.filterGeneration();
+          } else {
+            this.error = response.data.msg;
+          }
         });
     },
     filterGeneration() {

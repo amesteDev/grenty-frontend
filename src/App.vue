@@ -16,6 +16,7 @@
 </template>
 
 <style lang="scss">
+
 .logo {
   width: 100%;
 }
@@ -27,6 +28,7 @@
 
 #app {
   text-align: center;
+  margin-bottom: 100px;
 }
 
 #nav {

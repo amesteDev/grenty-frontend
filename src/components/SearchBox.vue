@@ -23,7 +23,7 @@
         />{{ maskinTyp }}
       </div>
 
-      <div v-for="maskin in filteredList" :key="maskin._id" :value="maskin._id">
+      <div class="search-hit" v-for="maskin in filteredList" :key="maskin._id" :value="maskin._id">
         <div v-for="msk in maskin.machines" :key="msk._id" :value="msk._id">
           <router-link :to="'/info/' + maskin._id + '/' + msk._id">
             <h3>Titel: {{ msk.machineName }}</h3>
@@ -172,3 +172,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-hit{
+  width: 20%;
+  margin: auto;
+}
+</style>

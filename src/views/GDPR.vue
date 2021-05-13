@@ -56,13 +56,13 @@
 <h2>SÅ HÄR LÄNGE SPARAS DINA PERSONUPPGIFTER</h2>
 <p>Vi sparar aldrig dina personuppgifter längre än vi behöver för att uppfylla våra förpliktelser gentemot dig samt den tid som kan krävas för att vi ska uppfylla lagar och regler. 
 Dessutom sparas endast personuppgifter i de fall som vi har laglig grund eller där ett samtycke uttryckligen har getts.</p>
-Exempel på lagringsperioder:
+<p>Exempel på lagringsperioder:
 Vid kontakt för teknisk support
 Lagringsperiod: en (1) månad efter att kundservice-ärendet har avslutats.
 Vid rekryteringsprocesser
 Lagringsperiod: Vi behåller uppgifterna tills rekryteringsprocessen är avslutad.
 Vid marknadsföringsaktiviteter
-Lagringsperiod: Vi behåller uppgifterna tills du drar tillbaka ditt samtycke.
+Lagringsperiod: Vi behåller uppgifterna tills du drar tillbaka ditt samtycke.</p>
 
 <h2>VI BEHANDLAR DINA PERSONUPPGIFTER PÅ ETT SÄKERT SÄTT</h2>
 <p>Vi arbetar för att hantera dina personuppgifter på ett säkert sätt. 
@@ -96,17 +96,25 @@ Du finner alltid den senaste versionen av vår integritetspolicy här på vår w
 </template>
 
 <style lang="scss">
+#GDPR-box{
+  width: 50%;
+  margin: auto;
+}
+
 .logo {
   width: 100%;
 }
 
+h2{
+  margin-top: 2em;
+}
 .head {
   display: grid;
   grid-template-columns: 40% 60%;
 }
 
-#app {
-  text-align: center;
+li, p{
+  text-align: left;
 }
 
 #nav {

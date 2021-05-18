@@ -12,8 +12,11 @@
       <p>{{ machine.description }}</p>
       <p>{{ machine.price }}/h</p>
 <form @submit="sendRequest">
-      <p>Välj datum du vill hyra:</p>
-      <input type="date" v-model="date" name="date" /><br />
+      <p>Välj datum du vill hyra: (Vill du hyra bara en dag så välj samma start och slutdatum</p>
+      <input type="date" v-model="startdate" name="startdate" /><br />
+      <input type="date" v-model="enddate" name="enddate" /><br />
+      <p>Välj starttid:</p><input type="time" v-model="starttime" name="starttime" />
+      <p>Välj sluttid:</p><input type="time" v-model="endtime" name="endtime" />
       <button type="submit" value="Submit" class="button">Skicka förfrågan om hyra</button>
       </form>
     </div>
@@ -29,15 +32,18 @@ export default {
     return {
       owner: null,
       machine: null,
-      date: null,
-      msg: null
+      startdate: null,
+      enddate: null,
+      msg: null,
+      starttime: null,
+      endtime: null
     };
   },
   methods: {
     async fetchMyMachines() {
       await axios
         .get(
-          "http://localhost:3000/machine/checkMachine/" +
+          "http://localhost:3000/machine/check/" +
             this.$route.params.user +
             "/" +
             this.$route.params.machine,

@@ -5,9 +5,18 @@ form{
         border-radius: 4px;
         border-color: $darklight;
     }
+
     button{
-        width: 50%;
-        margin: auto;
+        @include screen-size(large-screen){
+            width: 25%;
+            margin: auto;
+            color: pink;
+        }
+        @include screen-size(medium-screen){
+            width: 50%;
+            margin: auto;
+        }
+
     }
     display: grid;
 }

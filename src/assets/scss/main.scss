@@ -1,6 +1,9 @@
 @import "variables/variables";
+@import "utils/global";
 @import "core/global";
 @import "components/global";
+@import "layout/global";
+
 
 .button{
     @include button;

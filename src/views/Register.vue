@@ -75,7 +75,7 @@ export default {
       adress: null,
       zip: null,
       city: null,
-      email: null,
+      username: null,
       lan: null,
       kommun: null,
       errors: [],

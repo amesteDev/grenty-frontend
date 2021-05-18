@@ -1,4 +1,16 @@
 @mixin divider{
     border-bottom: 4px solid $green;
-}
+    margin: auto;
+    margin-top: 1em;
+    
+    @include screen-size(large-screen){
+        width: 50%;
 
+    }
+    @include screen-size(medium-screen){
+        width: 75%;
+    }
+    @include screen-size(small-screen){
+        width: 90%;
+    }
+}

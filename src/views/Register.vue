@@ -51,6 +51,9 @@
         <label for="city">Stad:</label>
         <input id="city" v-model="city" type="text" name="city">
     </p>
+    <label for="agree">Jag godkänner att mina personuppgifter hanteras enligt GDPR och <router-link to="/gdpr">integritetspolicy</router-link> </label>
+    
+    <input type="checkbox" id="agree" name="agree">
 
 
       <button type="submit" value="Submit" class="button">Registrera!</button>

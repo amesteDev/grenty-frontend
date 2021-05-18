@@ -32,20 +32,24 @@
       <div
         class="search-hit"
         v-for="maskin in filteredList"
-        :key="maskin._id"
-        :value="maskin._id"
+        :key="maskin.id"
+        :value="maskin.id"
       >
-        <router-link :to="'/info/' + maskin._id + '/' + maskin.owner">
-          <h3>Titel: {{ maskin.machineName }}</h3>
-          <p>Beskrivning: {{ maskin.description }}</p>
-          <p>Pris: {{ maskin.price }}</p>
-          <p>Finns i: {{ maskin.city }}</p>
+        <router-link
+          :to="'/info/' + maskin.owner + '/' + maskin.id"
+          class="search-link"
+        >
+          <div class="search-hit-inner">
+            <p><span class="search-title"> Maskintyp:</span> {{ maskin.machineName }}</p>
+            <p> <span class="search-title">Pris:</span> {{ maskin.price }} / timme</p>
+            <p> <span class="search-title">Finns i:</span> {{ maskin.city }}</p>
+          </div>
         </router-link>
       </div>
     </div>
     <div v-else>
       <p>
-        Välj först vilken län du vill söka i, sedan vilken kommun i det länet
+        Välj först vilken län du vill söka i, sedan vilken kommun i det länet (lämnas kommun tomt görs en sökning på hela länet)
       </p>
       <div v-if="error">
         <p>{{ error }}</p>
@@ -54,6 +58,7 @@
         <select
           name="county"
           id="county"
+          class="search-boxes"
           v-model="county"
           @change="selectLan()"
         >
@@ -65,6 +70,7 @@
           <select
             name="kommun"
             id="kommun"
+            class="search-boxes"
             v-model="kommun"
             placeholder="Välj kommun..."
           >
@@ -115,7 +121,8 @@ export default {
         .post(
           "http://localhost:3000/search",
           {
-            kommun: "Gävle",
+            
+            lan: this.county
           },
           {
             headers: {
@@ -134,6 +141,7 @@ export default {
         });
     },
     filterGeneration() {
+      //skriv om den här också.
       for (const item of Object.entries(this.search)) {
         if (!this.citys.includes(item[1].city)) {
           this.citys.push(item[1].city);
@@ -157,7 +165,6 @@ export default {
     calculateDistance(inpList) {
       console.log(inpList);
       for (let i = 0; i < inpList.length; i++) {
-
         let lat1 = inpList[i].latitude;
         let lat2 = localStorage.latitude;
         let lon1 = inpList[i].longitude;
@@ -218,8 +225,4 @@ export default {
 </script>
 
 <style scoped>
-.search-hit {
-  width: 20%;
-  margin: auto;
-}
 </style>

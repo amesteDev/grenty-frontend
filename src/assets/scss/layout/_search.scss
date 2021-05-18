@@ -1,0 +1,51 @@
+.search-hit {
+    width: 20%;
+    margin: auto;
+
+    margin-top: 0.5em;
+
+
+    @include screen-size(small-screen) {
+        width: 90%;
+    }
+}
+
+.search-hit-inner {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    border: 2px solid $green;
+    border-radius: 0.5em;
+    &:hover{
+        border: 2px solid $darklight;
+        color: black;
+    }
+    color: black;
+}
+
+.search-link{
+    text-decoration: none;
+    &:hover{
+        color: black;
+        text-decoration: underline;
+    }
+    p{
+        color: black;
+        &:hover{
+            color: black;
+        }
+    }
+
+}
+
+.search-title{
+    font-weight: bold;
+    &:hover{
+        color: black;
+    }
+}
+
+.search-boxes{
+    width: 50%;
+    margin: auto;
+    font-size: 22px;
+}

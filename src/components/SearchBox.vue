@@ -2,7 +2,8 @@
   <div>
     <h2>SÖk maskin</h2>
     <div v-if="error">
-      <p>{{ error }}</p></div>
+      <p>{{ error }}</p>
+    </div>
     <div v-if="search">
       <div class="filterbox">
         <h2>Filtrera sökresultat:</h2>
@@ -22,16 +23,24 @@
           v-bind:value="maskinTyp"
         />{{ maskinTyp }}
       </div>
+      <h3>Sortera din sökning</h3>
+      <select name="filtertype" id="filtertype" v-model="filtertype">
+        <option value="price">Pris</option>
+        <option value="distance">Avstånd</option></select
+      ><br />
 
-      <div class="search-hit" v-for="maskin in filteredList" :key="maskin._id" :value="maskin._id">
-        <div v-for="msk in maskin.machines" :key="msk._id" :value="msk._id">
-          <router-link :to="'/info/' + maskin._id + '/' + msk._id">
-            <h3>Titel: {{ msk.machineName }}</h3>
-            <p>Beskrivning: {{ msk.description }}</p>
-            <p>Pris: {{ msk.price }}</p>
-            <p>Finns i: {{ maskin.city }}</p>
-          </router-link>
-        </div>
+      <div
+        class="search-hit"
+        v-for="maskin in filteredList"
+        :key="maskin._id"
+        :value="maskin._id"
+      >
+        <router-link :to="'/info/' + maskin._id + '/' + maskin.owner">
+          <h3>Titel: {{ maskin.machineName }}</h3>
+          <p>Beskrivning: {{ maskin.description }}</p>
+          <p>Pris: {{ maskin.price }}</p>
+          <p>Finns i: {{ maskin.city }}</p>
+        </router-link>
       </div>
     </div>
     <div v-else>
@@ -93,7 +102,7 @@ export default {
       machineTypes: [],
       checkedMachines: [],
       checkedCitys: [],
-  
+      filtertype: "price",
     };
   },
   methods: {
@@ -103,21 +112,22 @@ export default {
     },
     fetchInKommun() {
       axios
-        .post("http://localhost:3000/search", 
+        .post(
+          "http://localhost:3000/search",
           {
-            kommun: this.kommun,
+            kommun: "Gävle",
           },
           {
             headers: {
-              Authorization:
-                "Bearer " + localStorage.token,
+              Authorization: "Bearer " + localStorage.token,
             },
-          })
+          }
+        )
         .then((response) => {
-          console.log(response.data)
-          if(!response.data.err){
-          this.search = response.data;
-          this.filterGeneration();
+          if (!response.data.err) {
+            this.search = response.data;
+            this.calculateDistance(response.data);
+            this.filterGeneration();
           } else {
             this.error = response.data.msg;
           }
@@ -144,37 +154,71 @@ export default {
         (kom) => kom.code == this.county
       ).kommuner;
     },
+    calculateDistance(inpList) {
+      console.log(inpList);
+      for (let i = 0; i < inpList.length; i++) {
+
+        let lat1 = inpList[i].latitude;
+        let lat2 = localStorage.latitude;
+        let lon1 = inpList[i].longitude;
+        let lon2 = localStorage.longitude;
+        var R = 6371;
+        var dLat = this.deg2rad(lat2 - lat1);
+        var dLon = this.deg2rad(lon2 - lon1);
+        let a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(this.deg2rad(lat1)) *
+            Math.cos(this.deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c; // Distance in km
+        inpList[i].distance = d;
+      }
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    },
   },
   computed: {
     filteredList() {
+      let rtnList;
+      //SKRIV OM DET HÄR OCKSÅ; DET BEHÖVS INTE SÅ MYCKET KONSTIG KOD NU.
       if (!this.checkedMachines.length) {
-        return this.search.filter((element) =>
+        rtnList = this.search.filter((element) =>
           this.checkedCitys.includes(element.city)
         );
-      }
-
-      return this.search
-        .filter((element) =>
-          element.machines.some(
-            (maskin) =>
-              this.checkedMachines.includes(maskin.machineName) &&
-              this.checkedCitys.includes(element.city)
+      } else {
+        rtnList = this.search
+          .filter((element) =>
+            element.machines.some(
+              (maskin) =>
+                this.checkedMachines.includes(maskin.machineName) &&
+                this.checkedCitys.includes(element.city)
+            )
           )
-        )
-        .map((element) => {
-          let newElt = Object.assign({}, element); // copies element
-          newElt.machines = newElt.machines.filter((maskin) =>
-            this.checkedMachines.includes(maskin.machineName)
-          );
-          return newElt;
-        });
+          .map((element) => {
+            let newElt = Object.assign({}, element); // copies element
+            newElt.machines = newElt.machines.filter((maskin) =>
+              this.checkedMachines.includes(maskin.machineName)
+            );
+            return newElt;
+          });
+      }
+      if (this.filtertype == "price") {
+        return rtnList.sort((a, b) => a.price - b.price);
+      }
+      if (this.filtertype == "distance") {
+        return rtnList.sort((a, b) => a.distance - b.distance);
+      }
+      return rtnList;
     },
   },
 };
 </script>
 
 <style scoped>
-.search-hit{
+.search-hit {
   width: 20%;
   margin: auto;
 }

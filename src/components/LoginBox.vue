@@ -73,8 +73,10 @@ export default {
           password: this.password,
         })
         .then((response) => {
-            (this.info = response.data),
-            (localStorage.token = response.data.token);
+          console.log(response.data);
+          localStorage.token = response.data.token;
+          localStorage.longitude = response.data.user.longitude;
+          localStorage.latitude = response.data.user.latitude;
           if (!response.data.err) {
             this.$router.go(0);
           } else {

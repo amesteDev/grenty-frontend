@@ -6,19 +6,19 @@
     </button>
     <ul class="menu" :class="{ showNav: menuOpen }">
       <li class="nav-item">
-        <router-link class="menu-link" to="/" @click="menuOpen = false"
-          >Home</router-link
-        >
+        <router-link class="menu-link" to="/">Hem</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="menu-link" to="/about" @click="menuOpen = false"
-          >About</router-link
-        >
+        <router-link class="menu-link" to="/about">Om grenty</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="menu-link" to="/machine" @click="menuOpen = false"
-          >Machine</router-link
-        >
+        <router-link class="menu-link" to="/search">Sök maskin</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="menu-link" to="/machine">Mina maskiner</router-link>
+      </li>
+      <li class="nav-item">
+        <a class="menu-link" @click="logout()">Logga ut</a>
       </li>
     </ul>
   </nav>
@@ -38,6 +38,12 @@ export default {
     return {
       menuOpen: false,
     };
+  },
+  methods: {
+    logout() {
+      localStorage.clear();
+      console.log("Kram");
+    },
   },
   watch: {
     $route() {

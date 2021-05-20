@@ -1,31 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import Verify from '../views/Verify.vue'
 
 Vue.use(VueRouter)
-
-function guardMyroute(to, from, next) {
-	var isAuthenticated = false;
-	if (localStorage.getItem('token')) {
-		isAuthenticated = true;
-	}
-	else {
-		isAuthenticated = false;
-	}
-	if (isAuthenticated) {
-		next(); // allow to enter route
-	} else {
-		next('/'); // go to '/login';
-	}
-}
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/MySite.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('../views/Search.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+
   {
     path: '/contact',
     name: 'Contact',
@@ -58,9 +59,11 @@ const routes = [
   {
     path: '/machine',
     name: 'MachineAdmin',
-    beforeEnter: guardMyroute,
     component: () => import(/* webpackChunkName: "about" */ '../views/MachineAdmin.vue'),
-    children:[
+    meta: {
+      requiresAuth: true
+    },
+    children: [
       {
         path: '',
         component: () => import('../components/machineInfo.vue')
@@ -82,7 +85,21 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (localStorage.getItem('token') == null) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      next({
+        path: "/login",
+        params: { nextUrl: to.Fullpath }
+      })
+    }
+  } else {
+    next();
+  }
 })
 
 export default router

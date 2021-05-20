@@ -78,7 +78,7 @@ export default {
           localStorage.longitude = response.data.user.longitude;
           localStorage.latitude = response.data.user.latitude;
           if (!response.data.err) {
-            this.$router.go(0);
+            this.$router.go('/search');
           } else {
             this.errors.push(response.data.msg);
           }

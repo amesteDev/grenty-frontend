@@ -63,9 +63,12 @@ export default {
       await axios.post(
         "http://localhost:3000/renting/request/send/",
         {
-          rentDate: this.date,
+          startDate: this.startdate,
+          endDate: this.enddate,
+          startTime: this.starttime,
+          endTime: this.endTime,
           owner: this.owner,
-          machine: this.machine._id,
+          machine: this.machine._id
         },
         {
           headers: {

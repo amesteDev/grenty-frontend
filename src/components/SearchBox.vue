@@ -163,7 +163,6 @@ export default {
       ).kommuner;
     },
     calculateDistance(inpList) {
-      console.log(inpList);
       for (let i = 0; i < inpList.length; i++) {
         let lat1 = inpList[i].latitude;
         let lat2 = localStorage.latitude;
@@ -179,7 +178,7 @@ export default {
             Math.sin(dLon / 2) *
             Math.sin(dLon / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var d = R * c; // Distance in km
+        var d = R * c;
         inpList[i].distance = d;
       }
     },

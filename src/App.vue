@@ -5,18 +5,30 @@
         <img src="./assets/logo.svg" class="logo" />
       </router-link>
     </header>
+    <div id="nav">
+      <NavMenu />
+    </div>
     <router-view />
     <footer>
       <p>grenty.se - &copy; 2021 - Morgan Andersson</p>
       <router-link to="/about">Om tjänsten</router-link>
       <router-link to="/gdpr">GDPR</router-link>
       <router-link to="/contact">Kontakt</router-link>
-      </footer>
+    </footer>
   </div>
 </template>
 
-<style lang="scss">
+<script>
+import NavMenu from "@/components/menu.vue";
+export default {
+  components: {
+    NavMenu,
+  },
 
+};
+</script>
+
+<style lang="scss">
 .logo {
   width: 100%;
 }
@@ -29,16 +41,5 @@
 #app {
   text-align: center;
   margin-bottom: 100px;
-}
-
-#nav {
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>

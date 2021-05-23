@@ -5,10 +5,15 @@
 @import "layout/global";
 
 
-.button{
+.button, .linkbtn{
     @include button;
 }
 
+
 .divider{
     @include divider;
+}
+
+.close-icon, .menu-icon{
+    cursor: pointer;
 }

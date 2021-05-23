@@ -8,8 +8,7 @@
     <div id="nav">
       <NavMenu />
     </div>
-
-    <router-view />
+    <router-view></router-view>
     
     <footer>
       <p>grenty.se - &copy; 2021 - Morgan Andersson</p>
@@ -25,7 +24,7 @@ import NavMenu from "@/components/menu.vue";
 export default {
   components: {
     NavMenu,
-  }
+  },
 };
 </script>
 
@@ -37,6 +36,9 @@ export default {
 .head {
   display: grid;
   grid-template-columns: 40% 60%;
+}
+.trest {
+  border: 1px solid red;
 }
 
 #app {

@@ -12,20 +12,24 @@
     <div class="divider"></div>
     <h4>Hyresförfrågningar:</h4>
 
-    <div v-if="rentRequests">
+    <div v-for="rentR in rentRequests" :key="rentR._id">
+      {{ rentR }}
       <h2>MASSA DATA HÄR</h2>
-      datum, tid, maskin, status
+      datum, tid, maskin, status ÖPPNA
+      <p>Datum: </p>
     </div>
 
-    <div v-else>
+    <div v-if="!rentRequests">
       <h2>Inga kommande hyror funna</h2>
   </div>
+
     <div class="divider"></div>
      <h4>Historik:</h4>
-    <div v-if="history">
+    <div v-for="rentH in history" :key="rentH._id">
       <h2>MASSA DATA HÄR</h2>
+      {{rentH}}
     </div>
-        <div v-else>
+        <div >
       <h2>Ingen historik tillgänglig</h2>
   </div>
 </template>
@@ -36,28 +40,32 @@ export default {
   data() {
     return {
       user: null,
-      rentRequests: [],
-      history: [],
+      rents: [],
     };
   },
   methods: {
     fetchMyRents() {
       axios.get("http://localhost:3000/renting/myrents").then((response) => {
         console.log(response);
-        for (let i = 0; i < response.length; i++) {
-          if (response[i].acceptanceStatus == "requested") {
-            rentRequests.push(response[i]);
-          }
-          else{
-            history.push(reponse[i]);
-          }
-        }
+        this.rents = response;
       });
     },
   },
   mounted() {
     this.user = localStorage.user();
     fetchMyrents();
+  },
+  computed: {
+    rentRequests: function () {
+      return this.rents.filter(
+        (element) => element.acceptanceStatus == "requested"
+      );
+    },
+    history: function () {
+      return this.rents.filter(
+        (element) => element.acceptanceStatus != "requested"
+      );
+    },
   },
 };
 </script>

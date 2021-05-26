@@ -49,7 +49,8 @@
             </p>
             <p><span class="search-title">Finns i:</span> {{ maskin.city }}</p>
             <p>
-              <span class="search-title">Avstånd: </span> {{ maskin.distance }}km
+              <span class="search-title">Avstånd: </span>
+              {{ maskin.distance }}km
             </p>
           </div>
         </router-link>
@@ -194,25 +195,13 @@ export default {
     filteredList() {
       let rtnList;
       if (!this.checkedMachines.length) {
-        rtnList = this.search.filter((element) =>
-          this.checkedCitys.includes(element.city)
-        );
+        rtnList = this.search.filter((element) => {
+          return this.checkedCitys.includes(element.city);
+        });
       } else {
-        rtnList = this.search
-          .filter((element) =>
-            element.machines.some(
-              (maskin) =>
-                this.checkedMachines.includes(maskin.machineName) &&
-                this.checkedCitys.includes(element.city)
-            )
-          )
-          .map((element) => {
-            let newElt = Object.assign({}, element); // copies element
-            newElt.machines = newElt.machines.filter((maskin) =>
-              this.checkedMachines.includes(maskin.machineName)
-            );
-            return newElt;
-          });
+        rtnList = this.search.filter((element) => {
+          return this.checkedMachines.includes(element.machineName) && this.checkedCitys.includes(element.city);
+        });
       }
       if (this.filtertype == "price") {
         return rtnList.sort((a, b) => a.price - b.price);

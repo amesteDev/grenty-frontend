@@ -34,7 +34,7 @@ export default {
   methods: {
     async fetchMyMachines() {
       axios
-        .get("http://localhost:3000/machine/info/", {
+        .get("https://grenty-api.herokuapp.com/machine/info/", {
           headers: {
             Authorization: "Bearer " + localStorage.token,
           },
@@ -43,7 +43,7 @@ export default {
     },
     async deleteMachine(){
       axios
-      .post("http://localhost:3000/machine/delete", {
+      .post("https://grenty-api.herokuapp.com/machine/delete", {
                   headers: {
             Authorization: "Bearer " + localStorage.token,
           },

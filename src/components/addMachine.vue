@@ -103,7 +103,7 @@ export default {
     async addMachine() {
       axios
         .post(
-          "http://localhost:3000/machine/add",
+          "https://grenty-api.herokuapp.com/machine/add",
           {
             machineName: this.name,
             price: this.price,

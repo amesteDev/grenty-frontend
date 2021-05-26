@@ -77,7 +77,7 @@ export default {
     },
     async updateMachine() {
       axios.put(
-        "http://localhost:3000/machine/update",
+        "https://grenty-api.herokuapp.com/machine/update",
         {
           machineName: this.name,
           price: this.price,
@@ -87,7 +87,7 @@ export default {
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgxMmYwODNhZWE2NDJiOWM3YzQxYTUiLCJuYW1lIjoicsO2diIsImV4cCI6MTYyNDkwMTY0Ny44NTUsImlhdCI6MTYxOTcxNzY0N30.msQa3ktAw7vZ7cIi-W0_4_gKMIJuSXVtcT6tjvTQ6X8",
+              "Bearer " + localStorage.token,
           },
         }
       );

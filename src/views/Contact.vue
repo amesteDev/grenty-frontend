@@ -31,7 +31,7 @@ export default {
   methods: {
     sendContactMail() {
       axios.post(
-        "http://localhost:3000/contactmail",
+        "https://grenty-api.herokuapp.com/contactmail",
         {
           name: this.name,
           mail: this.mail,

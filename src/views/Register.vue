@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="!success">
     <form     id="app"
     @submit="checkForm"
     action="https://vuejs.org/"
@@ -58,7 +59,12 @@
 
       <button type="submit" value="Submit" class="button">Registrera!</button>
     </form>
-
+    </div>
+    <div v-if="success">
+      <h2>Registrering lyckad</h2>
+      <p>Avvakta några minuter och kontrollera sedan din e-post för att verifiera ditt användarkonto. Kolla även i skräpposten.</p>
+      <p>Kommer inget mejl med information om verifiering? Prova att begära en ny länk på den här sidan:<router-link to="/verify">skicka ny länk</router-link> </p>
+      </div>
   </div>
 </template>
 
@@ -86,6 +92,7 @@ export default {
       pw_length: false,
       pw_lowercase: false,
       pw_uppercase: false,
+      success: false,
     };
   },
   watch: {
@@ -98,7 +105,7 @@ export default {
   },
 
   methods: {
-    checkForm: function (e) {
+    checkForm(e) {
       if (this.name && this.age) {
         return true;
       }
@@ -140,7 +147,7 @@ export default {
 
     registerUser() {
       axios
-        .post("http://localhost:3000/user/reg", {
+        .post("http://grenty-api.herokuapp.com/user/reg", {
           email: this.email,
           name: this.name,
           password: this.password,
@@ -149,7 +156,14 @@ export default {
           city: this.city,
           username: "okok",
         })
-        .then((response) => (this.info = response.data));
+        .then((response) => {
+          this.info = response.data;
+          if (response.data.err) {
+            this.errors.push(response.data.msg);
+          } else {
+            this.success = true;
+          }
+        });
     },
   },
 };

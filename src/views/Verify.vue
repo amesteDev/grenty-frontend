@@ -50,7 +50,7 @@ export default {
 
       if (!this.errors.length) {
         axios
-          .post("http://localhost:3000/user/resend", {
+          .post("httpd://grenty-api.herokuapp.com/user/resend", {
             email: this.email,
           })
           .then((response) => {
@@ -68,7 +68,7 @@ export default {
   },
   mounted() {
     axios
-      .post("http://localhost:3000/user/activate/" + this.$route.params.id)
+      .post("https://grenty-api.herokuapp.com/user/activate/" + this.$route.params.id)
       .then((response) => {
         (this.info = response.data), this.controlResponse();
       });

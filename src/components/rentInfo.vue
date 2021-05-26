@@ -43,7 +43,7 @@ export default {
     async fetchMyMachines() {
       await axios
         .get(
-          "http://localhost:3000/machine/check/" +
+          "https://grenty-api.herokuapp.com/machine/check/" +
             this.$route.params.user +
             "/" +
             this.$route.params.machine,
@@ -61,7 +61,7 @@ export default {
     async sendRequest(e) {
       e.preventDefault();
       await axios.post(
-        "http://localhost:3000/renting/request/send/",
+        "https://grenty-api.herokuapp.com/renting/request/send/",
         {
           startDate: this.startdate,
           endDate: this.enddate,

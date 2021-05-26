@@ -68,7 +68,7 @@ export default {
     },
     login() {
       axios
-        .post("http://localhost:3000/user/login", {
+        .post("https://grenty-api.herokuapp.com/user/login", {
           username: this.email,
           password: this.password,
         })
@@ -78,7 +78,7 @@ export default {
           localStorage.latitude = response.data.user.latitude;
  
           if (!response.data.err) {
-            this.$router.go('/');
+            this.$router.go('/home');
           } else {
             this.errors.push(response.data.msg);
           }

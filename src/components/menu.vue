@@ -42,7 +42,7 @@ export default {
   methods: {
     logout() {
       localStorage.clear();
-      console.log("Kram");
+      this.$router.go('/');
     },
   },
   watch: {

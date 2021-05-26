@@ -40,16 +40,25 @@
           class="search-link"
         >
           <div class="search-hit-inner">
-            <p><span class="search-title"> Maskintyp:</span> {{ maskin.machineName }}</p>
-            <p> <span class="search-title">Pris:</span> {{ maskin.price }} / timme</p>
-            <p> <span class="search-title">Finns i:</span> {{ maskin.city }}</p>
+            <p>
+              <span class="search-title"> Maskintyp:</span>
+              {{ maskin.machineName }}
+            </p>
+            <p>
+              <span class="search-title">Pris:</span> {{ maskin.price }} / timme
+            </p>
+            <p><span class="search-title">Finns i:</span> {{ maskin.city }}</p>
+            <p>
+              <span class="search-title">Avstånd: </span> {{ maskin.distance }}km
+            </p>
           </div>
         </router-link>
       </div>
     </div>
     <div v-else>
       <p>
-        Välj först vilken län du vill söka i, sedan vilken kommun i det länet (lämnas kommun tomt görs en sökning på hela länet)
+        Välj först vilken län du vill söka i, sedan vilken kommun i det länet
+        (lämnas kommun tomt görs en sökning på hela länet)
       </p>
       <div v-if="error">
         <p>{{ error }}</p>
@@ -119,10 +128,9 @@ export default {
     fetchInKommun() {
       axios
         .post(
-          "http://localhost:3000/search",
+          "https://grenty-api.herokuapp.com/search",
           {
-            
-            lan: this.county
+            lan: this.county,
           },
           {
             headers: {
@@ -147,12 +155,8 @@ export default {
           this.citys.push(item[1].city);
           this.checkedCitys.push(item[1].city);
         }
-        for (const machine in item[1].machines) {
-          if (
-            !this.machineTypes.includes(item[1].machines[machine].machineName)
-          ) {
-            this.machineTypes.push(item[1].machines[machine].machineName);
-          }
+        if (!this.machineTypes.includes(item[1].machineName)) {
+          this.machineTypes.push(item[1].machineName);
         }
       }
       this.filteredSearch = this.search;
@@ -164,10 +168,10 @@ export default {
     },
     calculateDistance(inpList) {
       for (let i = 0; i < inpList.length; i++) {
-        let lat1 = inpList[i].latitude;
-        let lat2 = localStorage.latitude;
-        let lon1 = inpList[i].longitude;
-        let lon2 = localStorage.longitude;
+        let lat1 = parseInt(inpList[i].lat);
+        let lat2 = parseInt(localStorage.latitude);
+        let lon1 = parseInt(inpList[i].lon);
+        let lon2 = parseInt(localStorage.longitude);
         var R = 6371;
         var dLat = this.deg2rad(lat2 - lat1);
         var dLon = this.deg2rad(lon2 - lon1);
@@ -179,7 +183,7 @@ export default {
             Math.sin(dLon / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         var d = R * c;
-        inpList[i].distance = d;
+        inpList[i].distance = Math.round(d);
       }
     },
     deg2rad(deg) {
@@ -189,7 +193,6 @@ export default {
   computed: {
     filteredList() {
       let rtnList;
-      //SKRIV OM DET HÄR OCKSÅ; DET BEHÖVS INTE SÅ MYCKET KONSTIG KOD NU.
       if (!this.checkedMachines.length) {
         rtnList = this.search.filter((element) =>
           this.checkedCitys.includes(element.city)

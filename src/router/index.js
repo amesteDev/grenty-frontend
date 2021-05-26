@@ -4,9 +4,17 @@ import Verify from '../views/Verify.vue'
 
 Vue.use(VueRouter)
 
+function loginCheck(to, from, next){
+  if (localStorage.getItem('token')) {
+    next('/home');
+  } else {
+    next();
+  }
+}
+
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: () => import('../views/MySite.vue'),
     meta: {
@@ -14,8 +22,9 @@ const routes = [
     }
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
+    beforeEnter: loginCheck,
     component: () => import('../views/Login.vue')
   },
   {
@@ -82,7 +91,6 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
   routes
 })
 
@@ -90,12 +98,13 @@ router.beforeEach((to, from, next) => {
   if (localStorage.getItem('token') == null) {
     if (to.matched.some(record => record.meta.requiresAuth)) {
       next({
-        path: "/login",
+        path: "/",
         params: { nextUrl: to.Fullpath }
       })
     }
-  } else {
-    next();
+    else {
+      next();
+    }
   }
   next();
 })

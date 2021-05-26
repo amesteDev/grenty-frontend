@@ -63,7 +63,7 @@ export default {
   methods: {
     fetchMyProfile() {
       axios
-        .get("http://localhost:3000/profile/fetchMy", {
+        .get("https://grenty-api.herokuapp.com/profile/fetchMy", {
           headers: {
             Authorization: "Bearer " + localStorage.token,
           },
@@ -74,7 +74,7 @@ export default {
     },
     fetchMyRents() {
       axios
-        .get("http://localhost:3000/renting/myrents", {
+        .get("https://grenty-api.herokuapp.com/renting/myrents", {
           headers: {
             Authorization: "Bearer " + localStorage.token,
           },
@@ -96,7 +96,7 @@ export default {
     },
     ansYes() {
       axios.post(
-        "http://localhost:3000/renting/request/answer",
+        "https://grenty-api.herokuapp.com/renting/request/answer",
         {
           answer: "yes",
           ...this.openRent,
@@ -111,7 +111,7 @@ export default {
 
     ansNo() {
       axios.post(
-        "http://localhost:3000/renting/request/answer",
+        "https://grenty-api.herokuapp.com/renting/request/answer",
         {
           answer: "no",
           ...this.openRent,

@@ -5,11 +5,11 @@
         <img src="./assets/logo.svg" class="logo" />
       </router-link>
     </header>
-    <div id="nav">
+    <div id="nav" v-if="loggedin">
       <NavMenu />
     </div>
     <router-view></router-view>
-    
+
     <footer>
       <p>grenty.se - &copy; 2021 - Morgan Andersson</p>
       <router-link to="/about">Om tjänsten</router-link>
@@ -24,6 +24,11 @@ import NavMenu from "@/components/menu.vue";
 export default {
   components: {
     NavMenu,
+  },
+  computed: {
+    loggedin() {
+      return localStorage.token != null ? true : false;
+    },
   },
 };
 </script>

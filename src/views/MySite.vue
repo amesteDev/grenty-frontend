@@ -8,12 +8,15 @@
 
     <div v-if="openModal" class="detail-modal">
       <XIcon :size="48" @click="openModal = !openModal" />
-      <h2>kram</h2>
-      <p>{{ openRent }}</p>
+      <h2>Hyresföfrågan</h2><br />
+ 
+      <p><span class="rent-title">Maskin:</span> {{ openRent.machineType }}</p>
+      <p><span class="rent-title">Datum:</span> {{ openRent.date }}</p>
+      <p><span class="rent-title">Status:</span> {{ openRent.acceptanceStatus }}</p>
+
       <div class="ans-buttons" v-if="openRent.owner == user._id">
         <button class="button" @click="ansYes">Acceptera</button>
         <button class="button" @click="ansNo">Tacka nej</button>
-
       </div>
     </div>
 
@@ -21,12 +24,12 @@
     <router-link to="/profile" class="linkbtn">Redigera profil</router-link>
     <router-link to="/machine" class="linkbtn">Mina maskiner</router-link>
     <div class="divider"></div>
-    <h4>Hyresförfrågningar:</h4>
 
     <div v-for="rentR in rentRequests" :key="rentR._id">
-      <h2>MASSA DATA HÄR</h2>
-      <p>Start: {{ rentR.startDate }}</p>
-      <p>Slut: {{ rentR.endDate }}</p>
+      <h2>Hyresöfrågan:</h2>
+      <p>Datum: {{ rentR.startDate }}</p>
+      <p>Maskin: {{ rentR.machineType}}</p>
+
       <button class="button" @click="openTheModal(rentR._id)">Detaljer</button>
     </div>
 
@@ -69,6 +72,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response.data);
           this.user = response.data;
         });
     },
@@ -80,6 +84,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response.data);
           this.rents = response.data;
         });
     },
@@ -148,3 +153,10 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+.rent-title {
+  font-weight: bold;
+}
+</style>

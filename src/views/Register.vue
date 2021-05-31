@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="!success">
+
     <form     id="app"
     @submit="checkForm"
     action="https://vuejs.org/"
@@ -13,11 +14,11 @@
       </ul>
     </p>
     <p>
-        <label for="email">E-post:</label>
+        <label for="email">E-post:</label><br />
         <input id="email" v-model="email" type="email" name="email">
     </p>
     <p>
-        <label for="password">Lösenord</label>
+        <label for="password">Lösenord</label><br />
         <input id="password" v-model="password" type="password" name="password"><br/>
         Lösenordet behöver innehålla:<br />
         <span :class="pw_length ? 'required' : '' ">minst åtta tecken</span><br />
@@ -27,34 +28,61 @@
     </p>
     
     <p>
-        <label for="name">Namn:</label>
+        <label for="name">Namn:</label><br />
         <input id="name" v-model="name" type="text" name="name">
     </p>
     <p>
-        <label for="adress">Adress:</label>
+        <label for="adress">Adress:</label><br />
         <input id="adress" v-model="adress" type="text" name="adress">
     </p>
 
         <p>
-        <label for="zip">Postnummer:</label>
+        <label for="zip">Postnummer:</label><br />
         <input id="zip" v-model="zip" type="zip" name="zip">
     </p>
-            <p>
-        <label for="lan">Stad:</label>
-        <input id="lan" v-model="lan" type="text" name="lan">
-    </p>
-                <p>
-        <label for="kommun">Stad:</label>
-        <input id="kommun" v-model="kommun" type="text" name="kommun">
+    <p>
+              <label for="county">Län:</label><br />
+        <select
+          name="county"
+          id="county"
+        
+          v-model="county"
+          @change="selectLan()"
+        >
+          <option v-for="lans in lanLista" :key="lans.code" :value="lans.code">
+            {{ lans.name }}
+          </option>
+        </select>
     </p>
 
+ <div v-if="selectedKommuner.length > 0">
+     <label for="kommun">Kommun:</label><br />
+          <select
+            name="kommun"
+            id="kommun"
+          
+            v-model="kommun"
+            placeholder="Välj kommun..."
+          >
+            <option
+              v-for="kommunerAttSkriva in selectedKommuner"
+              :key="kommunerAttSkriva.code"
+              :value="kommunerAttSkriva.name"
+            >
+              {{ kommunerAttSkriva.name }}
+            </option>
+          </select>
+           
+ </div>
+   
+
             <p>
-        <label for="city">Stad:</label>
+        <label for="city">Stad:</label><br />
         <input id="city" v-model="city" type="text" name="city">
-    </p>
-    <label for="agree">Jag godkänner att mina personuppgifter hanteras enligt GDPR och <router-link to="/gdpr">integritetspolicy</router-link> </label>
+    </p><br />
+    <label for="agree">  <input type="checkbox" id="agree" name="agree"> Jag godkänner att mina personuppgifter hanteras enligt GDPR och <router-link to="/gdpr">integritetspolicy</router-link>   </label><br />
     
-    <input type="checkbox" id="agree" name="agree">
+
 
 
       <button type="submit" value="Submit" class="button">Registrera!</button>
@@ -78,7 +106,8 @@ export default {
   data() {
     return {
       lanLista: lanJson,
-      kommunLista: kommunJson,
+      kommuner: kommunJson,
+      selectedKommuner: {},
       name: null,
       password: null,
       adress: null,
@@ -144,7 +173,11 @@ export default {
         this.registerUser();
       }
     },
-
+    selectLan() {
+      this.selectedKommuner = this.kommuner.find(
+        (kom) => kom.code == this.county
+      ).kommuner;
+    },
     registerUser() {
       axios
         .post("http://grenty-api.herokuapp.com/user/reg", {

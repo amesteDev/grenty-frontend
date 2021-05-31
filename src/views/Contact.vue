@@ -1,16 +1,24 @@
 <template>
   <div class="about">
+    <h1>Kontaktformulär:</h1>
     <form>
-      <label for="name">Namn</label>
-      <input id="name" v-model="name" type="text" name="name" />
-      <label for="email">E-post:</label>
-      <input id="email" v-model="email" type="email" name="email" />
-      <label for="msg">Meddelande</label>
-      <textarea id="msg" v-model="msg" name="msg"></textarea>
-      <button class="button" type="submit"></button>
+      <p>
+        <label for="name">Namn</label><br />
+        <input id="name" v-model="name" type="text" name="name" />
+      </p>
+
+      <p>
+        <label for="email">E-post:</label><br />
+        <input id="email" v-model="email" type="email" name="email" />
+      </p>
+      <p>
+        <label for="msg">Meddelande</label><br />
+        <textarea id="msg" v-model="msg" name="msg"></textarea>
+      </p><br/>
+     <label for="accept"><input type="checkbox" id="accept" name="accept"> Acceptera integritetspolicy</label><br />
+      <button class="button" type="submit">Skicka</button>
     </form>
-    <h1>KOntakformulär och grejjer.</h1>
-    <h2>KOM IHÅG GDPR_RUTA HÄR OCKSÅ</h2>
+
   </div>
 </template>
 
@@ -30,15 +38,25 @@ export default {
   },
   methods: {
     sendContactMail() {
-      axios.post(
-        "https://grenty-api.herokuapp.com/contactmail",
-        {
-          name: this.name,
-          mail: this.mail,
-          msg: this.msg
-        },
-      );
+      axios.post("https://grenty-api.herokuapp.com/contactmail", {
+        name: this.name,
+        mail: this.mail,
+        msg: this.msg,
+      });
     },
   },
 };
 </script>
+
+
+<style scoped>
+#msg{
+  resize: none;
+  height: 5em;
+  width: 20em;
+}
+#accept{
+  text-align: center;
+  margin: auto;
+}
+</style>

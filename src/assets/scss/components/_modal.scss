@@ -1,5 +1,6 @@
 .detail-modal{
     z-index: 99;
+    text-align: left;
     position: fixed;
     height: 70vh;
     width: 70vh;
@@ -11,6 +12,7 @@
     margin-right: auto; 
     background-color: white;
     border-radius: 0.5em;
+    padding: 2em;
     .close-icon{
         float: right;
     }

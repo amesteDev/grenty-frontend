@@ -74,8 +74,8 @@ export default {
         })
         .then((response) => {
           localStorage.token = response.data.token;
-          localStorage.longitude = response.data.user.longitude;
-          localStorage.latitude = response.data.user.latitude;
+          localStorage.longitude = response.data.user.lon;
+          localStorage.latitude = response.data.user.lat;
  
           if (!response.data.err) {
             this.$router.go('/home');

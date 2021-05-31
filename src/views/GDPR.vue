@@ -95,7 +95,7 @@ Du finner alltid den senaste versionen av vår integritetspolicy här på vår w
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #GDPR-box{
   width: 50%;
   margin: auto;
@@ -117,14 +117,5 @@ li, p{
   text-align: left;
 }
 
-#nav {
-  a {
-    font-weight: bold;
-    color: #2c3e50;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>

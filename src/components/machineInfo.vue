@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div><br />
     <div
       v-for="machine in info"
       v-bind:key="machine.idx"

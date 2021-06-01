@@ -47,12 +47,17 @@
     <div v-if="!rentRequests">
       <h2>Inga kommande hyror funna</h2>
     </div>
-
+    <div class="divider"></div>
+    <h4>Pågående hyra:</h4>
+    <div v-for="rentR in ongoing" :key="rentR._id">
+      <p>Datum: {{ rentR.date }}</p>
+      <p>Maskin: {{ rentR.machineType }}</p>
+    </div>
     <div class="divider"></div>
     <h4>Historik:</h4>
     <div v-for="rentH in history" :key="rentH._id">
-      <h2>MASSA DATA HÄR</h2>
-      {{ rentH }}
+      <p>Datum: {{ rentH.date }}</p>
+      <p>Maskin: {{ rentH.machineType }}</p>
     </div>
   </div>
 </template>

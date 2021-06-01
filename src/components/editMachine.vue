@@ -1,18 +1,23 @@
 <template>
   <div>
-    <h2>EDIT MACHINE</h2>
-    <form @submit="checkForm">
-      <input
-        v-model="name"
-        type="text"
-        class="form-control"
-        required
-        autofocus
-      />
-      <input v-model="price" type="number" required />
-      <textarea v-model="description"></textarea>
-      <button class="button" type="submit">Spara</button>
-    </form>
+    <div v-if="msg">
+      <h3>{{ msg }}</h3>
+    </div>
+    <div v-else>
+      <h2>Ändra din maskin:</h2>
+      <form @submit="checkForm">
+        <input
+          v-model="name"
+          type="text"
+          class="form-control"
+          required
+          autofocus
+        />
+        <input v-model="price" type="number" required />
+        <textarea v-model="description"></textarea>
+        <button class="button" type="submit">Spara</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -21,38 +26,33 @@
 import axios from "axios";
 
 export default {
-  name: "LoginBox",
-  props: {
-    msg: String,
-  },
   data() {
     return {
       info: null,
       name: null,
       price: null,
       description: null,
+      msg: null,
     };
   },
   methods: {
     async fetchMyMachines() {
       axios
-        .get("http://localhost:3000/machine/info/" + this.$route.params.id, {
-          headers: {
-            Authorization:
-              "Bearer " + localStorage.token,
-          },
-          email: "info@ameste.se",
-          password: "password",
-          user: "60812f083aea642b9c7c41a5",
-        })
+        .get(
+          "https://grenty-api.herokuapp.com/machine/info/" +
+            this.$route.params.id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
         .then((response) => {
+          console.log(response);
           this.name = response.data.machineName;
           this.price = response.data.price;
           this.description = response.data.description;
           this.info = response.data;
-          if(response.status == 200){
-            console.log("Lagring ok");
-          }
         });
     },
     checkForm: function (e) {
@@ -76,21 +76,26 @@ export default {
       }
     },
     async updateMachine() {
-      axios.put(
-        "https://grenty-api.herokuapp.com/machine/update",
-        {
-          machineName: this.name,
-          price: this.price,
-          description: this.description,
-          _id: this.$route.params.id
-        },
-        {
-          headers: {
-            Authorization:
-              "Bearer " + localStorage.token,
+      axios
+        .put(
+          "https://grenty-api.herokuapp.com/machine/update",
+          {
+            machineName: this.name,
+            price: this.price,
+            description: this.description,
+            _id: this.$route.params.id,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
+        .then((response) => {
+          if (!response.data.err) {
+            this.msg = "Lagring ok";
+          }
+        });
     },
   },
   mounted() {

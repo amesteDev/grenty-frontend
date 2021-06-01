@@ -1,6 +1,10 @@
 <template>
 <div>
   <h3>kram</h3>
+      <div v-if="msg">
+      <p>{{msg}}</p>
+    </div>
+    <div v-else>
   <form
     id="app"
     @submit="checkForm"
@@ -54,9 +58,7 @@
     </p>
 
   </form>
-
-      <p>{{ info }}</p>
-
+</div>
 
 </div>
 </template>
@@ -67,16 +69,13 @@ import axios from "axios";
 
 export default {
   name: "AddMachine",
-  props: {
-    msg: String,
-  },
   data() {
     return {
-      info: null,
       errors: [],
       description: null,
       name: null,
       price: null,
+      msg: null,
     };
   },
   methods: {
@@ -111,12 +110,16 @@ export default {
           },
           {
             headers: {
-              Authorization:
-                "Bearer " + localStorage.token,
+              Authorization: "Bearer " + localStorage.token,
             },
           }
         )
-        .then((response) => (this.info = response.data));
+        .then((response) => {
+          this.info = response.data;
+          if (!response.data.err) {
+            this.msg = response.msg;
+          }
+        });
     },
   },
 };

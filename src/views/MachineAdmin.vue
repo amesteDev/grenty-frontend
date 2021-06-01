@@ -1,8 +1,7 @@
 <template>
   <div class="kram">
     <h2>Dina maskiner</h2>
-    <router-link to="/machine/add">Add</router-link><br />
-    <router-link to="/machine/edit">Edit</router-link><br />
+    <router-link to="/machine/add">Lägg till maskin</router-link><br />
     <router-view />
   </div>
 </template>

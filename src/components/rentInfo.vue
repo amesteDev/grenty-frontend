@@ -12,9 +12,8 @@
       <p>{{ machine.description }}</p>
       <p>{{ machine.price }}/h</p>
 <form @submit="sendRequest">
-      <p>Välj datum du vill hyra: (Vill du hyra bara en dag så välj samma start och slutdatum</p>
-      <input type="date" v-model="startdate" name="startdate" /><br />
-      <input type="date" v-model="enddate" name="enddate" /><br />
+      <p>Välj datum du vill hyra: </p>
+      <input type="date" v-model="date" name="date" /><br />
       <p>Välj starttid:</p><input type="time" v-model="starttime" name="starttime" />
       <p>Välj sluttid:</p><input type="time" v-model="endtime" name="endtime" />
       <button type="submit" value="Submit" class="button">Skicka förfrågan om hyra</button>
@@ -32,8 +31,7 @@ export default {
     return {
       owner: null,
       machine: null,
-      startdate: null,
-      enddate: null,
+      date: null,
       msg: null,
       starttime: null,
       endtime: null
@@ -63,12 +61,12 @@ export default {
       await axios.post(
         "https://grenty-api.herokuapp.com/renting/request/send/",
         {
-          startDate: this.startdate,
-          endDate: this.enddate,
+          date: this.date,
           startTime: this.starttime,
           endTime: this.endTime,
           owner: this.owner,
-          machine: this.machine._id
+          machine: this.machine._id,
+          machineType: this.machine.machineName,
         },
         {
           headers: {
@@ -79,6 +77,8 @@ export default {
       .then(response => {
         if(!response.err){
           this.msg = 'Förfrågan skickad, du kan se status på din sida'
+        }else {
+          console.log(response);
         }
       });
     },

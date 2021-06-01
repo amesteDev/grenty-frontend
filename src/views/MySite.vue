@@ -16,6 +16,14 @@
       <p>
         <span class="rent-title">Status:</span> {{ openRent.acceptanceStatus }}
       </p>
+      <div v-if="otherUser">
+        <p><span class="rent-title">Motpart: </span>{{ otherUser.name }}</p>
+        <p><span class="rent-title">Adress: </span>{{ otherUser.adress }}</p>
+        <p>
+          <span class="rent-title">Postort: </span
+          >{{ otherUser.zip + " " + otherUser.city }}
+        </p>
+      </div>
 
       <div class="ans-buttons" v-if="openRent.owner == user._id">
         <button class="button" @click="ansYes">Acceptera</button>
@@ -30,7 +38,7 @@
 
     <div v-for="rentR in rentRequests" :key="rentR._id">
       <h2>Hyresöfrågan:</h2>
-      <p>Datum: {{ rentR.startDate }}</p>
+      <p>Datum: {{ rentR.date }}</p>
       <p>Maskin: {{ rentR.machineType }}</p>
 
       <button class="button" @click="openTheModal(rentR._id)">Detaljer</button>
@@ -64,6 +72,7 @@ export default {
       rents: [],
       openModal: false,
       openRent: null,
+      otherUser: null,
     };
   },
   methods: {
@@ -75,7 +84,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           this.user = response.data;
         });
     },
@@ -87,7 +95,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           this.rents = response.data;
         });
     },
@@ -100,6 +107,35 @@ export default {
         if (this.rentRequests[i]._id == rentId) {
           this.openRent = this.rentRequests[i];
         }
+      }
+      if (this.openRent.owner == this.user._id) {
+        axios
+          .get(
+            "https://grenty-api.herokuapp.com/profile/fetchOther/" +
+              this.openRent.renter,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.token,
+              },
+            }
+          )
+          .then((response) => {
+            this.otherUser = response.data;
+          });
+      } else {
+        axios
+          .get(
+            "https://grenty-api.herokuapp.com/profile/fetchOther/" +
+              this.openRent.owner,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.token,
+              },
+            }
+          )
+          .then((response) => {
+            this.otherUser = response.data;
+          });
       }
     },
     ansYes() {

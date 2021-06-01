@@ -8,11 +8,14 @@
 
     <div v-if="openModal" class="detail-modal">
       <XIcon :size="48" @click="openModal = !openModal" />
-      <h2>Hyresföfrågan</h2><br />
- 
+      <h2>Hyresföfrågan</h2>
+      <br />
+
       <p><span class="rent-title">Maskin:</span> {{ openRent.machineType }}</p>
       <p><span class="rent-title">Datum:</span> {{ openRent.date }}</p>
-      <p><span class="rent-title">Status:</span> {{ openRent.acceptanceStatus }}</p>
+      <p>
+        <span class="rent-title">Status:</span> {{ openRent.acceptanceStatus }}
+      </p>
 
       <div class="ans-buttons" v-if="openRent.owner == user._id">
         <button class="button" @click="ansYes">Acceptera</button>
@@ -28,7 +31,7 @@
     <div v-for="rentR in rentRequests" :key="rentR._id">
       <h2>Hyresöfrågan:</h2>
       <p>Datum: {{ rentR.startDate }}</p>
-      <p>Maskin: {{ rentR.machineType}}</p>
+      <p>Maskin: {{ rentR.machineType }}</p>
 
       <button class="button" @click="openTheModal(rentR._id)">Detaljer</button>
     </div>
@@ -100,33 +103,49 @@ export default {
       }
     },
     ansYes() {
-      axios.post(
-        "https://grenty-api.herokuapp.com/renting/request/answer",
-        {
-          answer: "yes",
-          ...this.openRent,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.token,
+      axios
+        .post(
+          "https://grenty-api.herokuapp.com/renting/request/answer",
+          {
+            answer: "yes",
+            ...this.openRent,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
+        .then((response) => {
+          if (!response.data.err) {
+            //lyckad transaktion ladda om sidan
+          } else {
+            //något gick fel
+          }
+        });
     },
 
     ansNo() {
-      axios.post(
-        "https://grenty-api.herokuapp.com/renting/request/answer",
-        {
-          answer: "no",
-          ...this.openRent,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.token,
+      axios
+        .post(
+          "https://grenty-api.herokuapp.com/renting/request/answer",
+          {
+            answer: "no",
+            ...this.openRent,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
+        .then((response) => {
+          if (!response.data.err) {
+            //lyckad transaktion ladda om sidan
+          } else {
+            //något gick fel
+          }
+        });
     },
   },
   mounted() {

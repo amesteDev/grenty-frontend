@@ -4,7 +4,6 @@
 
     margin-top: 0.5em;
 
-
     @include screen-size(small-screen) {
         width: 90%;
     }
@@ -15,37 +14,44 @@
     grid-template-columns: 50% 50%;
     border: 2px solid $green;
     border-radius: 0.5em;
-    &:hover{
+    &:hover {
         border: 2px solid $darklight;
         color: black;
     }
     color: black;
 }
 
-.search-link{
+.search-link {
     text-decoration: none;
-    &:hover{
+    &:hover {
         color: black;
         text-decoration: underline;
     }
-    p{
+    p {
         color: black;
-        &:hover{
+        &:hover {
             color: black;
         }
     }
-
 }
 
-.search-title{
+.search-title {
     font-weight: bold;
-    &:hover{
+    &:hover {
         color: black;
     }
 }
 
-.search-boxes{
+.search-boxes {
     width: 50%;
     margin: auto;
     font-size: 22px;
+    @include screen-size(medium-screen) {
+        width: 75%;
+        margin: auto;
+    }
+    @include screen-size(small-screen) {
+        width: 90%;
+        margin: auto;
+    }
 }

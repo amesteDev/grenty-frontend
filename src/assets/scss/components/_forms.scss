@@ -1,10 +1,24 @@
 form {
     grid-template-rows: auto;
-    input {
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
         padding: 4px;
         border-radius: 4px;
         border-color: $darklight;
         width: 15%;
+        @include screen-size(large-screen) {
+            width: 25%;
+            margin: auto;
+        }
+        @include screen-size(medium-screen) {
+            width: 55%;
+            margin: auto;
+        }
+        @include screen-size(small-screen) {
+            width: 90%;
+            margin: auto;
+        }
         margin-top: 8px;
         margin-bottom: 8px;
     }
@@ -13,13 +27,19 @@ form {
         font-size: 20px;
     }
     button {
+        width: 15%;
+        margin: auto;
+        margin-top: 1em;
         @include screen-size(large-screen) {
             width: 25%;
             margin: auto;
-            color: pink;
         }
         @include screen-size(medium-screen) {
-            width: 50%;
+            width: 55%;
+            margin: auto;
+        }
+        @include screen-size(small-screen) {
+            width: 90%;
             margin: auto;
         }
     }
@@ -28,5 +48,4 @@ form {
 
 input[type="checkbox"] {
     transform: scale(2);
-
 }

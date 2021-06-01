@@ -1,27 +1,44 @@
 <template>
   <div>
-    <h2>SÖk maskin</h2>
+    <h2>Sök maskin</h2>
     <div v-if="error">
       <p>{{ error }}</p>
     </div>
     <div v-if="search">
-      <div class="filterbox">
+      <div>
         <h2>Filtrera sökresultat:</h2>
       </div>
       <h3>Filtrera på ort:</h3>
-      <div v-for="stad in citys" :key="stad">
-        {{ stad }}
-        <input type="checkbox" v-model="checkedCitys" v-bind:value="stad" />
+      <div v-for="stad in citys" :key="stad" class="filterbox">
+        <label v-bind:for="stad">
+          <input
+            type="checkbox"
+            v-model="checkedCitys"
+            v-bind:value="stad"
+            v-bind:id="stad"
+            v-bind:name="stad"
+          />
+          {{ stad }}
+        </label>
       </div>
+      <div class="machine-types">
+        <h3>Filtrera på maskintyp:</h3>
 
-      <h3>Filtrera på maskintyp:</h3>
-
-      <div v-for="maskinTyp in machineTypes" :key="maskinTyp">
-        <input
-          type="checkbox"
-          v-model="checkedMachines"
-          v-bind:value="maskinTyp"
-        />{{ maskinTyp }}
+        <div
+          v-for="maskinTyp in machineTypes"
+          :key="maskinTyp"
+          class="filterbox"
+        >
+          <label v-bind:for="maskinTyp"
+            ><input
+              type="checkbox"
+              v-model="checkedMachines"
+              v-bind:value="maskinTyp"
+              v-bind:id="maskinTyp"
+              v-bind:name="maskinTyp"
+            />{{ maskinTyp }}</label
+          >
+        </div>
       </div>
       <h3>Sortera din sökning</h3>
       <select name="filtertype" id="filtertype" v-model="filtertype">
@@ -200,7 +217,10 @@ export default {
         });
       } else {
         rtnList = this.search.filter((element) => {
-          return this.checkedMachines.includes(element.machineName) && this.checkedCitys.includes(element.city);
+          return (
+            this.checkedMachines.includes(element.machineName) &&
+            this.checkedCitys.includes(element.city)
+          );
         });
       }
       if (this.filtertype == "price") {
@@ -215,5 +235,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.machine-types{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 50%;
+  margin: auto;
+  h3{
+    grid-column: 1/3;
+  }
+}
+.filterbox {
+  margin-bottom: 1em;
+  padding: 0.5em;
+}
 </style>

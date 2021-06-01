@@ -2,11 +2,7 @@
     border-bottom: 4px solid $green;
     margin: auto;
     margin-top: 1em;
-    
-    @include screen-size(large-screen){
-        width: 50%;
-
-    }
+    width: 50%;
     @include screen-size(medium-screen){
         width: 75%;
     }

@@ -4,7 +4,7 @@ import Verify from '../views/Verify.vue'
 
 Vue.use(VueRouter)
 
-function loginCheck(to, from, next){
+function loginCheck(to, from, next) {
   if (localStorage.getItem('token')) {
     next('/home');
   } else {
@@ -63,6 +63,13 @@ const routes = [
 
   },
   {
+    path: '/info/:user/:machine',
+    component: () => import('../views/rentInfo.vue'),
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
     path: '/machine',
     name: 'MachineAdmin',
     component: () => import('../views/MachineAdmin.vue'),
@@ -73,10 +80,6 @@ const routes = [
       {
         path: '',
         component: () => import('../components/machineInfo.vue')
-      },
-      {
-        path: '/info/:user/:machine',
-        component: () => import('../components/rentInfo.vue')
       },
       {
         path: 'edit/:id',
